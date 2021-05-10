@@ -12,8 +12,14 @@ import java.util.Map;
  * 『Stay hungry, stay foolish. 』
  */
 public class WebUtils {
-    public static <T> T copyParamToBean(Map value, T bean) {
 
+    /**
+     * @describe: 将参数一次性批量注入对象
+     * @param value map类型
+	 * @param bean 待注入对象
+     * @return T
+     */
+    public static <T> T copyParamToBean(Map value, T bean) {
         try {
             BeanUtils.populate(bean, value);
         } catch (IllegalAccessException e) {
@@ -22,5 +28,20 @@ public class WebUtils {
             e.printStackTrace();
         }
         return bean;
+    }
+
+    /**
+     * @describe: 将字符串转换为int类型的数据
+     * @param strInt    待转换字符串
+	 * @param defaultValue  转换失败默认值
+     * @return int
+     */
+    public static int parseInt(String strInt, int defaultValue) {
+        try {
+            return Integer.parseInt(strInt);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return defaultValue;
     }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -6,6 +7,18 @@
 <title>图书管理</title>
 	<%-- 静态包含 base标签、css样式、jQuery文件 --%>
 	<%@ include file="/pages/common/head.jsp"%>
+	<script type="text/javascript">
+		$(function () {
+			$("a.deleteClass").click(function (){
+				/**
+				 * @describe: confirm 是确认框提示框函数
+				 * @param null 参数是提示内容
+				 * @return 点击确认返回true，取消返回false，阻止元素的默认行为（不提交请求）
+				 */
+				return confirm("你确定要删除【"+ $(this).parent().parent().find("td:first").text()+"】吗？");
+			})
+		})
+	</script>
 </head>
 <body>
 	
@@ -28,45 +41,18 @@
 				<td>库存</td>
 				<td colspan="2">操作</td>
 			</tr>		
-			<tr>
-				<td>时间简史</td>
-				<td>20.00</td>
-				<td>霍金</td>
-				<td>200</td>
-				<td>400</td>
-				<td><a href="book_edit.jsp">修改</a></td>
-				<td><a href="#">删除</a></td>
-			</tr>	
-			
-			<tr>
-				<td>时间简史</td>
-				<td>20.00</td>
-				<td>霍金</td>
-				<td>200</td>
-				<td>400</td>
-				<td><a href="book_edit.jsp">修改</a></td>
-				<td><a href="#">删除</a></td>
-			</tr>	
-			
-			<tr>
-				<td>时间简史</td>
-				<td>20.00</td>
-				<td>霍金</td>
-				<td>200</td>
-				<td>400</td>
-				<td><a href="book_edit.jsp">修改</a></td>
-				<td><a href="#">删除</a></td>
-			</tr>	
-			
-			<tr>
-				<td>时间简史</td>
-				<td>20.00</td>
-				<td>霍金</td>
-				<td>200</td>
-				<td>400</td>
-				<td><a href="book_edit.jsp">修改</a></td>
-				<td><a href="#">删除</a></td>
-			</tr>	
+
+			<c:forEach items="${requestScope.books}" var="book">
+				<tr>
+					<td>${book.name}</td>
+					<td>${book.price}</td>
+					<td>${book.author}</td>
+					<td>${book.sales}</td>
+					<td>${book.stock}</td>
+					<td><a href="manager/bookServlet?action=getBook&id=${book.id}&method=update">修改</a> </td>
+					<td><a class="deleteClass" href="manager/bookServlet?action=delete&id=${book.id}">删除</a> </td>
+				</tr>
+			</c:forEach>
 			
 			<tr>
 				<td></td>
@@ -75,7 +61,7 @@
 				<td></td>
 				<td></td>
 				<td></td>
-				<td><a href="book_edit.jsp">添加图书</a></td>
+				<td><a href="pages/manager/book_edit.jsp?method=add">添加图书</a></td>
 			</tr>	
 		</table>
 	</div>
