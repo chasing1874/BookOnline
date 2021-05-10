@@ -1,6 +1,7 @@
 package chasing.service;
 
 import chasing.pojo.Book;
+import chasing.pojo.Page;
 
 import java.util.List;
 
@@ -20,4 +21,8 @@ public interface BookService {
     public Book queryBookById(Integer id);
 
     public List<Book> queryBooks();
+
+    Page<Book> page(int pageNo, int pageSize);
+
+    Page<Book> pageByPrice(int min, int max, int pageNo, int pageSize);
 }
