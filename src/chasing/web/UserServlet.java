@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY;
+
 /**
  * @author 柴柴快乐每一天
  * @create 2021-05-05  3:41 下午
@@ -44,6 +46,9 @@ public class UserServlet extends BaseServlet {
             //跳回登录页面
             req.getRequestDispatcher("/pages/user/login.jsp").forward(req,resp);
         } else {
+            // 登录成功
+            // 保存用户登录的信息到Session域中
+            req.getSession().setAttribute("user", login);
             req.getRequestDispatcher("/pages/user/login_success.jsp").forward(req,resp);
         }
     }
@@ -55,6 +60,12 @@ public class UserServlet extends BaseServlet {
      * @return void
      */
     protected void regist(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+
+        //获取session中的验证码
+        String token = (String) req.getSession().getAttribute(KAPTCHA_SESSION_KEY);
+        //删除session中的验证码
+        req.getSession().removeAttribute(KAPTCHA_SESSION_KEY);
+
         String username = req.getParameter("username");
         String password = req.getParameter("password");
         String email = req.getParameter("email");
@@ -63,21 +74,25 @@ public class UserServlet extends BaseServlet {
         User user = new User();
         WebUtils.copyParamToBean(req.getParameterMap(), user);
 
-        if ("abc".equalsIgnoreCase(code)) {
+        //检查验证码是否正确
+        if (token != null && token.equalsIgnoreCase(code)) {
             if (userService.existsUsername(username)) {
                 System.out.println("the username has existed!");
+                //回显信息，保存到request域中
                 req.setAttribute("msg", "用户名已存在！");
                 req.setAttribute("email", email);
                 req.getRequestDispatcher("/pages/user/regist.jsp").forward(req,resp);
             } else {
+                //调用service保存到数据库
                 userService.registUser(user);
+                //session保存用户登录状态
+                req.getSession().setAttribute("user", user);
                 req.getRequestDispatcher("/pages/user/regist_success.jsp").forward(req, resp);
             }
 
 
 
         } else {
-            System.out.println("wrong code!");
             req.setAttribute("msg", "验证码错误");
             req.setAttribute("username", username);
             req.setAttribute("password", password);
@@ -87,4 +102,17 @@ public class UserServlet extends BaseServlet {
         }
     }
 
+    /**
+     * 用户注销
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
+    protected void logout(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //1. 销毁session中用户登录的信息（或者直接销毁session，确保session域对象没有其他重要数据）
+        req.getSession().invalidate();
+        //2. 重定向回首页
+        resp.sendRedirect(req.getContextPath());
+    }
 }
