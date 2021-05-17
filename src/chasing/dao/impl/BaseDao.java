@@ -28,7 +28,7 @@ public abstract class BaseDao {
     /**
      * @param sql
 	 * @param args 
-     * @return int
+     * @return int 返回执行结果状态
      * @author 
      * @describe: 
      * @date 2021/4/26 5:11 下午

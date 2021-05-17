@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -33,27 +34,28 @@
 				<td>金额</td>
 				<td>状态</td>
 				<td>详情</td>
-			</tr>		
-			<tr>
-				<td>2015.04.23</td>
-				<td>90.00</td>
-				<td>未发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2015.04.20</td>
-				<td>20.00</td>
-				<td>已发货</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>	
-			
-			<tr>
-				<td>2014.01.23</td>
-				<td>190.00</td>
-				<td>已完成</td>
-				<td><a href="#">查看详情</a></td>
-			</tr>		
+			</tr>
+			<c:if test="${empty requestScope.myOrders}">
+				<td colspan="5"><a href="index.jsp">穷狗，购物车空空如也==</a>  </td>
+			</c:if>
+			<c:if test="${not empty requestScope.myOrders}">
+				<c:forEach items="${requestScope.myOrders}" var="myOrder">
+					<tr>
+						<td>${myOrder.createTime}</td>
+						<td>${myOrder.price}</td>
+						<td>
+							<c:choose>
+								<c:when test="${myOrder.status==0}">未发货</c:when>
+								<c:when test="${myOrder.status==1}"><a href="orderServlet?action=receiveOrder&orderId=${myOrder.orderId}&userId=${sessionScope.user.id}">确认收货</a> </c:when>
+								<c:when test="${myOrder.status==2}">已签收</c:when>
+							</c:choose>
+						</td>
+						<td><a href="orderServlet?action=orderDetails&orderId=${myOrder.orderId}&MU=User">查看详情</a></td>
+					</tr>
+				</c:forEach>
+			</c:if>
+
+
 		</table>
 		
 	

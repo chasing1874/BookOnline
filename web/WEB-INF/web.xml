@@ -7,6 +7,16 @@
 
 
     <servlet>
+        <servlet-name>EbServlet</servlet-name>
+        <servlet-class>chasing.web.EbServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EbServlet</servlet-name>
+        <url-pattern>/ebServlet</url-pattern>
+    </servlet-mapping>
+
+
+    <servlet>
         <servlet-name>UserServlet</servlet-name>
         <servlet-class>chasing.web.UserServlet</servlet-class>
     </servlet>
@@ -48,5 +58,14 @@
     <servlet-mapping>
         <servlet-name>CartServlet</servlet-name>
         <url-pattern>/cartServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>OrderServlet</servlet-name>
+        <servlet-class>chasing.web.OrderServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderServlet</servlet-name>
+        <url-pattern>/orderServlet</url-pattern>
     </servlet-mapping>
 </web-app>
