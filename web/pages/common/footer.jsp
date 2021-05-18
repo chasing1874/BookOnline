@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div id="bottom">
 		<span>
-			尚硅谷书城.Copyright &copy;2015
+			尚硅谷书城.Copyright &copy;2015<br/>
+			<a href="pages/client/eb.jsp">Todo_list</a>
 		</span>
 </div>

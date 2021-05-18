@@ -110,11 +110,8 @@
 		<%@include file="/pages/common/page_nav.jsp"%>
 	
 	</div>
-	
-	<div id="bottom">
-		<span>
-			尚硅谷书城.Copyright &copy;2015
-		</span>
-	</div>
+
+	<%-- 静态包含 页脚信息 --%>
+	<%@ include file="/pages/common/footer.jsp"%>
 </body>
 </html>

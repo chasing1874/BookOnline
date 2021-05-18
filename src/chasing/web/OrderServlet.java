@@ -42,6 +42,7 @@ public class OrderServlet extends BaseServlet{
             return;
         }
 
+
         Integer userId = loginUser.getId();
         String orderId = orderService.createOrder(cart, userId);
 
